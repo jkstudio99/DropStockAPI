@@ -1,0 +1,6 @@
+@DropStockAPI_HostAddress = http://localhost:5135
+
+GET {{DropStockAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
