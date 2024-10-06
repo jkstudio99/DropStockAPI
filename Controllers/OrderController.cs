@@ -31,9 +31,7 @@ namespace DropStockAPI.Controllers
         {
             int skip = (page - 1) * limit;
 
-            var query = _context.OrderModels
-                .Include(o => o.CustomerModel) // Optional: Include customer data
-                .AsQueryable();
+            var query = _context.OrderModels.AsQueryable();
 
             // Apply search filtering if a search query is provided
             if (!string.IsNullOrEmpty(searchQuery))
@@ -57,8 +55,7 @@ namespace DropStockAPI.Controllers
                     o.orderstatus,
                     o.orderdetails,
                     o.createddate,
-                    o.modifieddate,
-                    Customer = o.CustomerModel != null ? new { o.CustomerModel.firstname, o.CustomerModel.lastname } : null
+                    o.modifieddate
                 })
                 .ToList();
 
@@ -74,7 +71,6 @@ namespace DropStockAPI.Controllers
         public ActionResult GetOrder(int id)
         {
             var order = _context.OrderModels
-                .Include(o => o.CustomerModel) // Optional: Include customer data
                 .Select(o => new
                 {
                     o.orderid,
@@ -83,8 +79,7 @@ namespace DropStockAPI.Controllers
                     o.orderstatus,
                     o.orderdetails,
                     o.createddate,
-                    o.modifieddate,
-                    Customer = o.CustomerModel != null ? new { o.CustomerModel.firstname, o.CustomerModel.lastname } : null
+                    o.modifieddate
                 })
                 .FirstOrDefault(o => o.orderid == id);
 

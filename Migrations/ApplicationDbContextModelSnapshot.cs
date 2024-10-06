@@ -103,7 +103,7 @@ namespace DropStockAPI.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<decimal?>("orderprice")
+                    b.Property<decimal>("orderprice")
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)");
 

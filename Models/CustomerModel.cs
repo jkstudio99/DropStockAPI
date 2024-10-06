@@ -18,6 +18,6 @@ public partial class CustomerModel
     public string? email { get; set; }
 
     public int? staffid { get; set; }
-    // Navigation property to Orders
-    public ICollection<OrderModel> Orders { get; set; }
+    // // Navigation property to Orders
+    // public ICollection<OrderModel> Orders { get; set; }
 }

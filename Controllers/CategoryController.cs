@@ -10,7 +10,7 @@ namespace DropStockAPI.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    [EnableCors("MultipleOrigins")]
+    [EnableCors("EnableCors")]
     public class CategoryController : ControllerBase
     {
 

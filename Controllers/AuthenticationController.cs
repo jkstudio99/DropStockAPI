@@ -13,7 +13,7 @@ namespace DropStockAPI.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    [EnableCors("MultipleOrigins")]
+    [EnableCors("EnableCors")]
     public class AuthenticationController : ControllerBase
     {
         // สร้าง Object ของ ApplicationDbContext
@@ -497,6 +497,96 @@ namespace DropStockAPI.Controllers
         public class TokenValidationModel
         {
             public required string Token { get; set; }
+        }
+
+        // Forgot Password
+        [HttpPost]
+        [Route("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest(new ResponseModel
+                {
+                    Status = "Error",
+                    Message = "User with this email does not exist."
+                });
+            }
+
+            // Generate reset token
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            // Send email with the token (implement email sending logic here)
+
+            return Ok(new ResponseModel
+            {
+                Status = "Success",
+                Message = "Password reset link has been sent to your email."
+            });
+        }
+
+        // Reset Password
+        [HttpPost]
+        [Route("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest(new ResponseModel
+                {
+                    Status = "Error",
+                    Message = "User with this email does not exist."
+                });
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                return BadRequest(new ResponseModel
+                {
+                    Status = "Error",
+                    Message = "Error resetting password."
+                });
+            }
+
+            return Ok(new ResponseModel
+            {
+                Status = "Success",
+                Message = "Password has been reset successfully."
+            });
+        }
+
+        // Confirm Email
+        [HttpPost]
+        [Route("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest(new ResponseModel
+                {
+                    Status = "Error",
+                    Message = "User with this email does not exist."
+                });
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, model.Token);
+            if (!result.Succeeded)
+            {
+                return BadRequest(new ResponseModel
+                {
+                    Status = "Error",
+                    Message = "Error confirming email."
+                });
+            }
+
+            return Ok(new ResponseModel
+            {
+                Status = "Success",
+                Message = "Email confirmed successfully."
+            });
         }
     }
 }

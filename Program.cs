@@ -20,7 +20,6 @@ var cloudinaryAccount = new Account(
 // Register Cloudinary as a singleton service in the dependency injection container
 builder.Services.AddSingleton(new Cloudinary(cloudinaryAccount));
 
-
 // Add services to the container
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -54,25 +53,27 @@ builder.Services.AddCors(options =>
     options.AddPolicy("EnableCors", policy =>
     {
         policy.WithOrigins(
-                "https://*.azurewebsites.net/",
-                "https://*.netlify.app/",
-                "https://*.vercel.app/",
-                "https://*.herokuapp.com/",
-                "https://*.firebaseapp.com/",
-                "https://*.github.io/",
-                "https://*.gitlab.io/",
-                "https://*.onrender.com/",
-                "https://*.surge.sh/",
+                "https://example.azurewebsites.net",
+                "https://example.netlify.app",
+                "https://example.vercel.app",
+                "https://example.herokuapp.com",
+                "https://example.firebaseapp.com",
+                "https://example.github.io",
+                "https://example.gitlab.io",
+                "https://example.onrender.com",
+                "https://example.surge.sh",
                 "http://localhost:8080",
                 "http://localhost:4200",
                 "http://localhost:3000",
                 "http://localhost:5173",
                 "http://localhost:5000",
-                "http://localhost:5001"
+                "http://localhost:5001",
+                "http://127.0.0.1:5500"
             )
-            .SetIsOriginAllowedToAllowWildcardSubdomains()
+            .SetIsOriginAllowedToAllowWildcardSubdomains() // Allows subdomains for the specified origins
             .AllowAnyMethod()
-            .AllowAnyHeader();
+            .AllowAnyHeader()
+            .AllowCredentials(); // Ensure credentials can be sent
     });
 });
 

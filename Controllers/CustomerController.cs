@@ -10,7 +10,7 @@ namespace DropStockAPI.Controllers;
 [Authorize] // Only Admin and Manager roles can access these endpoints  (Roles = "Admin,Manager")
 [ApiController]
 [Route("api/[controller]")]
-[EnableCors("MultipleOrigins")]
+[EnableCors("EnableCors")]
 public class CustomerController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
