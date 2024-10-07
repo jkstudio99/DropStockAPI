@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DropStockAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f98054de108d4cff87a1a4ae2a36b49812355eb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ecd4e9238f7521d2a9fbbd40ee5e623248effa58")]
 [assembly: System.Reflection.AssemblyProductAttribute("DropStockAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DropStockAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

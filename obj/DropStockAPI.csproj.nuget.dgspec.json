@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jkstudio/Desktop/dotnet8/DropStockAPI/DropStockAPI.csproj": {}
+    "/Users/jkstudio/Desktop/Github/DropStockAPI/DropStockAPI.csproj": {}
   },
   "projects": {
-    "/Users/jkstudio/Desktop/dotnet8/DropStockAPI/DropStockAPI.csproj": {
+    "/Users/jkstudio/Desktop/Github/DropStockAPI/DropStockAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jkstudio/Desktop/dotnet8/DropStockAPI/DropStockAPI.csproj",
+        "projectUniqueName": "/Users/jkstudio/Desktop/Github/DropStockAPI/DropStockAPI.csproj",
         "projectName": "DropStockAPI",
-        "projectPath": "/Users/jkstudio/Desktop/dotnet8/DropStockAPI/DropStockAPI.csproj",
+        "projectPath": "/Users/jkstudio/Desktop/Github/DropStockAPI/DropStockAPI.csproj",
         "packagesPath": "/Users/jkstudio/.nuget/packages/",
-        "outputPath": "/Users/jkstudio/Desktop/dotnet8/DropStockAPI/obj/",
+        "outputPath": "/Users/jkstudio/Desktop/Github/DropStockAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/jkstudio/.nuget/NuGet/NuGet.Config"
