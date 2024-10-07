@@ -1,6 +1,7 @@
 using System.Text;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using DropStockAPI.Extensions;
 using DropStockAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +20,10 @@ var cloudinaryAccount = new Account(
 
 // Register Cloudinary as a singleton service in the dependency injection container
 builder.Services.AddSingleton(new Cloudinary(cloudinaryAccount));
+
+// Register EmailService as a singleton service in the dependency injection container
+builder.Services.AddScoped<EmailService>();
+
 
 // Add services to the container
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

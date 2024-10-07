@@ -1,7 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using DropStockAPI.Extensions;
 using DropStockAPI.Models;
+using MailKit;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -23,19 +25,22 @@ namespace DropStockAPI.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly EmailService _emailService;
 
         // ฟังก์ชันสร้าง Constructor สำหรับ initial ค่าของ ApplicationDbContext
         public AuthenticationController(
             ApplicationDbContext context,
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration
+            IConfiguration configuration,
+            EmailService emailService
         )
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         // ทดสอบเขียนฟังก์ชันการเชื่อมต่อ database
@@ -516,7 +521,12 @@ namespace DropStockAPI.Controllers
 
             // Generate reset token
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            // Send email with the token (implement email sending logic here)
+            var resetLink = Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Scheme);
+
+            // Send email using the injected EmailService instance
+            var subject = "Password Reset Request";
+            var message = $"Please reset your password by clicking <a href=\"{resetLink}\">here</a>.";
+            await _emailService.SendEmailAsync(user.Email, subject, message);  // Use _emailService instance here
 
             return Ok(new ResponseModel
             {
@@ -525,7 +535,7 @@ namespace DropStockAPI.Controllers
             });
         }
 
-        // Reset Password
+
         [HttpPost]
         [Route("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
@@ -546,7 +556,7 @@ namespace DropStockAPI.Controllers
                 return BadRequest(new ResponseModel
                 {
                     Status = "Error",
-                    Message = "Error resetting password."
+                    Message = "Error resetting password. Please ensure the reset token is valid."
                 });
             }
 
@@ -557,7 +567,8 @@ namespace DropStockAPI.Controllers
             });
         }
 
-        // Confirm Email
+
+
         [HttpPost]
         [Route("confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailModel model)

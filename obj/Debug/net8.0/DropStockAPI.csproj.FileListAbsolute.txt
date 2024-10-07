@@ -117,3 +117,7 @@
 /Users/jkstudio/Desktop/dotnet8/DropStockAPI/bin/Debug/net8.0/Gravity.dll
 /Users/jkstudio/Desktop/dotnet8/DropStockAPI/bin/Debug/net8.0/WebDriver.Support.dll
 /Users/jkstudio/Desktop/dotnet8/DropStockAPI/bin/Debug/net8.0/WebDriver.dll
+/Users/jkstudio/Desktop/dotnet8/DropStockAPI/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/Users/jkstudio/Desktop/dotnet8/DropStockAPI/bin/Debug/net8.0/MailKit.dll
+/Users/jkstudio/Desktop/dotnet8/DropStockAPI/bin/Debug/net8.0/MimeKit.dll
+/Users/jkstudio/Desktop/dotnet8/DropStockAPI/bin/Debug/net8.0/System.Formats.Asn1.dll
