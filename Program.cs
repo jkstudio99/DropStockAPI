@@ -61,7 +61,7 @@ services.AddAuthentication(options =>
 // Allow CORS
 services.AddCors(options =>
 {
-    options.AddPolicy("EnableCors", policy =>
+    options.AddPolicy("CorsDropStock", policy =>
     {
         policy.WithOrigins(
                 "https://example.azurewebsites.net",

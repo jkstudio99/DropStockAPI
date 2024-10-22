@@ -216,8 +216,15 @@ namespace DropStockAPI.Controllers
 
             if (!string.IsNullOrEmpty(product.productpicture) && product.productpicture != "noimg.jpg")
             {
-                // If necessary, you can add code here to delete the image from Cloudinary
-                // Example: _cloudinary.DestroyAsync(new DeletionParams("public_id_of_the_image"));
+                var publicId = product.productpicture.Split("/").Last().Split(".").First();
+                var deleteParams = new DeletionParams(publicId);
+
+                var result = _cloudinary.Destroy(deleteParams);
+
+                if (result.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    return BadRequest("Image delete failed.");
+                }
             }
 
             _context.ProductModels.Remove(product);
