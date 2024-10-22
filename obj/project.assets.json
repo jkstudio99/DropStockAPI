@@ -6616,11 +6616,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jkstudio/Desktop/Github/DropStockAPI/DropStockAPI.csproj",
+      "projectUniqueName": "/Users/jkstudio/Desktop/dotnet8/DropStockAPI/DropStockAPI.csproj",
       "projectName": "DropStockAPI",
-      "projectPath": "/Users/jkstudio/Desktop/Github/DropStockAPI/DropStockAPI.csproj",
+      "projectPath": "/Users/jkstudio/Desktop/dotnet8/DropStockAPI/DropStockAPI.csproj",
       "packagesPath": "/Users/jkstudio/.nuget/packages/",
-      "outputPath": "/Users/jkstudio/Desktop/Github/DropStockAPI/obj/",
+      "outputPath": "/Users/jkstudio/Desktop/dotnet8/DropStockAPI/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/jkstudio/.nuget/NuGet/NuGet.Config"

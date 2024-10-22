@@ -13,7 +13,7 @@ namespace DropStockAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [EnableCors("EnableCors")]
+    [EnableCors("CorsDropStock")]
     public class AuthenticationController : ControllerBase
     {
         private readonly ApplicationDbContext _context; // Context สำหรับการเชื่อมต่อกับฐานข้อมูล

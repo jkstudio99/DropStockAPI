@@ -138,7 +138,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("EnableCors");
+app.UseCors("CorsDropStock");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

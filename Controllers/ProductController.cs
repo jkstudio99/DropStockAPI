@@ -12,7 +12,7 @@ namespace DropStockAPI.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    [EnableCors("EnableCors")]
+    [EnableCors("CorsDropStock")]
     public class ProductController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

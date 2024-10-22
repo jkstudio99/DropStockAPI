@@ -10,7 +10,7 @@ namespace DropStockAPI.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    [EnableCors("EnableCors")]
+    [EnableCors("CorsDropStock")]
     public class CategoryController : ControllerBase
     {
 
@@ -27,6 +27,8 @@ namespace DropStockAPI.Controllers
         // ฟังก์ชันสำหรับการดึงข้อมูล Category ทั้งหมด
         // GET /api/Category
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)] // Server Error
         public ActionResult<CategoryModel> GetCategories()
         {
             // LINQ stand for "Language Integrated Query"
@@ -39,6 +41,9 @@ namespace DropStockAPI.Controllers
         // ฟังก์ชันสำหรับการดึงข้อมูล Category ตาม ID
         // GET /api/Category/1
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status404NotFound)] // Not Found
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)] // Server Error
         public ActionResult<CategoryModel> GetCategory(int id)
         {
             // LINQ สำหรับการดึงข้อมูลจากตาราง Categories ตาม ID
@@ -58,6 +63,9 @@ namespace DropStockAPI.Controllers
         // POST /api/Category
         // [Authorize(Roles = UserRolesModel.Admin + "," + UserRolesModel.Manager)]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)] // Created
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)] // Server Error
         public ActionResult<CategoryModel> AddCategory([FromBody] CategoryModel category)
         {
             // เพิ่มข้อมูลลงในตาราง Categories
@@ -71,6 +79,10 @@ namespace DropStockAPI.Controllers
         // ฟังก์ชันสำหรับการแก้ไขข้อมูล Category
         // PUT /api/Category/1
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Bad Request
+        [ProducesResponseType(StatusCodes.Status404NotFound)] // Not Found
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)] // Server Error
         public ActionResult<CategoryModel> UpdateCategory(int id, [FromBody] CategoryModel category)
         {
             // ค้นหาข้อมูล Category ตาม ID
@@ -96,6 +108,9 @@ namespace DropStockAPI.Controllers
         // ฟังก์ชันสำหรับการลบข้อมูล Category
         // DELETE /api/Category/1
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)] // Success
+        [ProducesResponseType(StatusCodes.Status404NotFound)] // Not Found
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)] // Server Error
         public ActionResult<CategoryModel> DeleteCategory(int id)
         {
             // ค้นหาข้อมูล Category ตาม ID
