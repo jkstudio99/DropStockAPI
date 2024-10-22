@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DropStockAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241006092426_authentication")]
-    partial class authentication
+    [Migration("20241010232525_Authentication")]
+    partial class Authentication
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,194 @@ namespace DropStockAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-                  
+
+            modelBuilder.Entity("DropStockAPI.Models.CategoryModel", b =>
+                {
+                    b.Property<int>("categoryid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValueSql("nextval('category_categoryid_seq'::regclass)");
+
+                    b.Property<string>("categoryname")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<int>("categorystatus")
+                        .HasColumnType("integer");
+
+                    b.HasKey("categoryid")
+                        .HasName("category_pkey");
+
+                    b.ToTable("CategoryModel", (string)null);
+                });
+
+            modelBuilder.Entity("DropStockAPI.Models.CustomerModel", b =>
+                {
+                    b.Property<int>("customerid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValueSql("nextval('customer_customerid_seq'::regclass)");
+
+                    b.Property<string>("address")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("email")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("firstname")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("lastname")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("phone")
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
+
+                    b.Property<int?>("staffid")
+                        .HasColumnType("integer");
+
+                    b.HasKey("customerid")
+                        .HasName("customer_pkey");
+
+                    b.ToTable("CustomerModel", (string)null);
+                });
+
+            modelBuilder.Entity("DropStockAPI.Models.OrderModel", b =>
+                {
+                    b.Property<int>("orderid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValueSql("nextval('order_orderid_seq'::regclass)");
+
+                    b.Property<DateTime>("createddate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("customerid")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("modifieddate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("orderdetails")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("ordername")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<decimal>("orderprice")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)");
+
+                    b.Property<string>("orderstatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("orderid")
+                        .HasName("order_pkey");
+
+                    b.ToTable("OrderModel", (string)null);
+                });
+
+            modelBuilder.Entity("DropStockAPI.Models.PaymentModel", b =>
+                {
+                    b.Property<int>("billnumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValueSql("nextval('payment_billnumber_seq'::regclass)");
+
+                    b.Property<string>("otherdetail")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("paymenttype")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.HasKey("billnumber")
+                        .HasName("payment_pkey");
+
+                    b.ToTable("PaymentModel", (string)null);
+                });
+
+            modelBuilder.Entity("DropStockAPI.Models.ProductModel", b =>
+                {
+                    b.Property<int>("productid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValueSql("nextval('product_productid_seq'::regclass)");
+
+                    b.Property<int>("categoryid")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("createddate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime?>("modifieddate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("productname")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("productpicture")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<int?>("unitinstock")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("unitprice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("productid")
+                        .HasName("product_pkey");
+
+                    b.ToTable("ProductModel", (string)null);
+                });
+
+            modelBuilder.Entity("DropStockAPI.Models.SupplierModel", b =>
+                {
+                    b.Property<int>("supplierid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValueSql("nextval('supplier_supplierid_seq'::regclass)");
+
+                    b.Property<string>("address")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("email")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("name")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("otherdetail")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("phone")
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
+
+                    b.HasKey("supplierid")
+                        .HasName("supplier_pkey");
+
+                    b.ToTable("SupplierModel", (string)null);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {

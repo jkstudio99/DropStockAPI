@@ -13,4 +13,5 @@ public class LoginModel
     [Required(ErrorMessage = "Password is required")]
      [MinLength(6, ErrorMessage = "Password is too short")]
     public string? Password { get; set; }
+    
 }

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DropStockAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class authentication : Migration
+    public partial class Authentication : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,6 +49,101 @@ namespace DropStockAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CategoryModel",
+                columns: table => new
+                {
+                    categoryid = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('category_categoryid_seq'::regclass)"),
+                    categoryname = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    categorystatus = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("category_pkey", x => x.categoryid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerModel",
+                columns: table => new
+                {
+                    customerid = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('customer_customerid_seq'::regclass)"),
+                    firstname = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    lastname = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    address = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
+                    email = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    staffid = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("customer_pkey", x => x.customerid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderModel",
+                columns: table => new
+                {
+                    orderid = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('order_orderid_seq'::regclass)"),
+                    ordername = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    orderprice = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
+                    orderstatus = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    orderdetails = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    customerid = table.Column<int>(type: "integer", nullable: false),
+                    createddate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    modifieddate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("order_pkey", x => x.orderid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentModel",
+                columns: table => new
+                {
+                    billnumber = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('payment_billnumber_seq'::regclass)"),
+                    paymenttype = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    otherdetail = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("payment_pkey", x => x.billnumber);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductModel",
+                columns: table => new
+                {
+                    productid = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('product_productid_seq'::regclass)"),
+                    productname = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    unitprice = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: true),
+                    unitinstock = table.Column<int>(type: "integer", nullable: true),
+                    productpicture = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    categoryid = table.Column<int>(type: "integer", nullable: false),
+                    createddate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    modifieddate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("product_pkey", x => x.productid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SupplierModel",
+                columns: table => new
+                {
+                    supplierid = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('supplier_supplierid_seq'::regclass)"),
+                    name = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    address = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
+                    email = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    otherdetail = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("supplier_pkey", x => x.supplierid);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,6 +307,24 @@ namespace DropStockAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "CategoryModel");
+
+            migrationBuilder.DropTable(
+                name: "CustomerModel");
+
+            migrationBuilder.DropTable(
+                name: "OrderModel");
+
+            migrationBuilder.DropTable(
+                name: "PaymentModel");
+
+            migrationBuilder.DropTable(
+                name: "ProductModel");
+
+            migrationBuilder.DropTable(
+                name: "SupplierModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -2,6 +2,8 @@ using System.Text;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using DropStockAPI.Extensions;
+using DropStockAPI.Filters;
+using DropStockAPI.Helpers;
 using DropStockAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -11,31 +13,35 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var services = builder.Services;
+
 // Retrieve Cloudinary settings from appsettings.json
 var cloudinaryAccount = new Account(
-    builder.Configuration["Cloudinary:CloudName"],  // Reads "dz5g39sci"
-    builder.Configuration["Cloudinary:ApiKey"],     // Reads "898576772969359"
-    builder.Configuration["Cloudinary:ApiSecret"]   // Reads "Stn-wM7A40B17OBp68GlOVU96MI"
+    builder.Configuration["Cloudinary:CloudName"],
+    builder.Configuration["Cloudinary:ApiKey"],
+    builder.Configuration["Cloudinary:ApiSecret"]
 );
 
 // Register Cloudinary as a singleton service in the dependency injection container
-builder.Services.AddSingleton(new Cloudinary(cloudinaryAccount));
+services.AddSingleton(new Cloudinary(cloudinaryAccount));
 
 // Register EmailService as a singleton service in the dependency injection container
-builder.Services.AddScoped<EmailService>();
+services.AddScoped<EmailService>();
 
 
 // Add services to the container
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+services.AddScoped<TokenHelper>();
+
 // Add authentication for JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-builder.Services.AddAuthentication(options =>
+services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -53,7 +59,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Allow CORS
-builder.Services.AddCors(options =>
+services.AddCors(options =>
 {
     options.AddPolicy("EnableCors", policy =>
     {
@@ -82,13 +88,14 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen(options =>
 {
     options.SupportNonNullableReferenceTypes();
     options.SwaggerDoc("v1", new() { Title = "DropStockAPI", Version = "v1" });
 
+    // Add security definition for Bearer token
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -99,6 +106,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "JWT Authorization header using the Bearer scheme."
     });
 
+    // Apply security to all operations that require authorization
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -113,7 +121,12 @@ builder.Services.AddSwaggerGen(options =>
             new string[] {}
         }
     });
+
+    // เพิ่มฟิลเตอร์ AuthorizeCheckOperationFilter
+    options.OperationFilter<AuthorizeCheckOperationFilter>();
 });
+
+
 
 var app = builder.Build();
 
