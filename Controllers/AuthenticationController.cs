@@ -136,14 +136,16 @@ namespace DropStockAPI.Controllers
             });
         }
 
-        // ฟังก์ชันสำหรับสร้าง JWT Token
         private JwtSecurityToken GenerateToken(IEnumerable<Claim> claims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecurityKey"]!)); // ใช้ Secret Key ในการเข้ารหัส
+                                                                                                                               // ดึงเวลา expiry จากการตั้งค่าใน appsettings
+            var expiryInMinutes = int.Parse(_configuration["JwtSettings:ExpiryInMinutes"]);
+
             return new JwtSecurityToken(
                 issuer: _configuration["JwtSettings:ValidIssuer"],
                 audience: _configuration["JwtSettings:ValidAudience"],
-                expires: DateTime.Now.AddHours(24),
+                expires: DateTime.Now.AddMinutes(expiryInMinutes), // ใช้เวลา expiry จากการตั้งค่า
                 claims: claims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256) // ใช้ HmacSha256 ในการลงนาม
             );
@@ -235,23 +237,11 @@ namespace DropStockAPI.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email); // ค้นหา User จาก Email
             if (user == null) return BadRequest(new { Message = "User with this email does not exist." }); // ถ้าไม่เจอ User
 
-            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword); // Reset Password โดยใช้ Token และรหัสผ่านใหม่
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.ConfirmPassword); // Reset Password โดยใช้ Token และรหัสผ่านใหม่
             if (!result.Succeeded) return BadRequest(new { Message = "Error resetting password. Please ensure the reset token is valid." }); // ถ้ามีข้อผิดพลาดในการ Reset Password
 
             return Ok(new { Message = "Password has been reset successfully." }); // ยืนยันการ Reset Password สำเร็จ
         }
 
-        // ฟังก์ชันสำหรับ Confirm Email
-        [HttpPost("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailModel model)
-        {
-            var user = await _userManager.FindByEmailAsync(model.Email); // ค้นหา User จาก Email
-            if (user == null) return BadRequest(new { Message = "User with this email does not exist." }); // ถ้าไม่เจอ User
-
-            var result = await _userManager.ConfirmEmailAsync(user, model.Token); // ยืนยันอีเมลโดยใช้ Token
-            if (!result.Succeeded) return BadRequest(new { Message = "Error confirming email." }); // ถ้ามีข้อผิดพลาดในการยืนยันอีเมล
-
-            return Ok(new { Message = "Email confirmed successfully." }); // ยืนยันอีเมลสำเร็จ
-        }
     }
 }
