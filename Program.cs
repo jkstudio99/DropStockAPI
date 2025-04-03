@@ -131,13 +131,18 @@ services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
+
+if (app.Environment.IsDevelopment())
+{
 app.UseHttpsRedirection();
+}
 app.UseCors("CorsDropStock");
 app.UseAuthentication();
 app.UseAuthorization();
